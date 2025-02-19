@@ -7,17 +7,19 @@ import {
     Menu
   } from 'lucide-react'
 
+  import {Link} from 'react-router-dom'
+
   import { useState } from 'react';
   
   function SideBar() {
     const [isOpen, setIsOpen] = useState(true);
   
     const menuItems = [
-      { icon: <Sun size={20} />, text: 'My Day' },
-      { icon: <Loader size={20} />, text: 'In Progress' },
-      { icon: <Brain size={20} />, text: 'Reflect' },
-      { icon: <CalendarCheck size={20} />, text: 'Weekly Goals' },
-      { icon: <Target size={20} />, text: 'Quarterly Goals' },
+      { icon: <Sun size={20} />, text: 'My Day', pageLink:'/' },
+      { icon: <Loader size={20} />, text: 'In Progress', pageLink:'/inprogress' },
+      { icon: <Brain size={20} />, text: 'Reflect', pageLink:'/reflect' },
+      { icon: <CalendarCheck size={20} />, text: 'Weekly Goals', pageLink:'/weekly-goals' },
+      { icon: <Target size={20} />, text: 'Quarterly Goals', pageLink:'/quarterly-goals' },
     ];
   
     return (
@@ -41,7 +43,8 @@ import {
                 {item.icon}
               </span>
               <span className={`${!isOpen && 'hidden'} duration-200 text-gray-700`}>
-                {item.text}
+                <Link to={item.pageLink}>{item.text}</Link>
+                
               </span>
             </li>
           ))}
