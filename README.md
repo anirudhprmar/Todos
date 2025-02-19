@@ -31,7 +31,7 @@ GetItDone is a feature-rich task management tool designed to boost productivity 
 
 ```bash
 # Clone the repository
-git clone https://github.com/anirudhprmar/Todos.git
+git clone https://github.com/anirudhprmar/Get-It-Done.git
 
 # Navigate to project directory
 cd Todos
