@@ -5,11 +5,11 @@ import App from './App.jsx'
 import './index.css'
 
 // Import components for routes
-import { ActualTodo } from './pages/ActualTodo.jsx';
-import InProgress from './components/InProgress';
-import Reflect from './components/Reflect';
-import WeeklyGoals from './components/WeeklyGoals';
-import QuarterlyGoals from './components/QuarterlyGoals';
+import ActualTodo from './pages/ActualTodo.jsx';
+import InProgress from './pages/InProgress';
+import Reflect from './pages/Reflect';
+import WeeklyGoals from './pages/WeeklyGoals';
+import QuarterlyGoals from './pages/QuarterlyGoals';
 
 const root = document.getElementById("root");
 

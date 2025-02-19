@@ -1,5 +1,4 @@
 import SideBar from "./components/SideBar";
-import ActualTodo from "./pages/ActualTodo";
 import { Outlet } from "react-router-dom";
 
 function App() {
@@ -10,7 +9,7 @@ function App() {
     <div className="min-h-screen flex">
      
       <SideBar/> 
-      <ActualTodo/>
+      {/* <ActualTodo/> */}
       <div className="flex-1">
         <Outlet />
       </div>
