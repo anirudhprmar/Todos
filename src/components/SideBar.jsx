@@ -15,8 +15,8 @@ import {
     const [isOpen, setIsOpen] = useState(true);
   
     const menuItems = [
-      { icon: <Sun size={20} />, text: 'My Day', pageLink:'/' },
-      { icon: <Loader size={20} />, text: 'In Progress', pageLink:'/inprogress' },
+      { icon: <Sun size={20} />, text: 'My Day', pageLink:'/my-day' },
+      { icon: <Loader size={20} />, text: 'In Progress', pageLink:'/in-progress' },
       { icon: <Brain size={20} />, text: 'Reflect', pageLink:'/reflect' },
       { icon: <CalendarCheck size={20} />, text: 'Weekly Goals', pageLink:'/weekly-goals' },
       { icon: <Target size={20} />, text: 'Quarterly Goals', pageLink:'/quarterly-goals' },

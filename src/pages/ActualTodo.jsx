@@ -31,7 +31,7 @@ function ActualTodo() {
               My Day
             </h1>
 
-                <div className="flex text-2xl p-3 justify-center items-center gap-1 text-gray-600">
+                <div className="flex text-2xl p-3 justify-center items-center gap-1 text-gray-600 ">
                   <span>{properDayName},</span>
                   <span>{todayDate} {properMonthName}</span>
               </div>  

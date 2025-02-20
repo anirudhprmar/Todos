@@ -1,5 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
+import TimePick from "./TimePick";
+import {calculateTimeReq} from './calculateTime.js'
 
 function Todos() {
 
@@ -39,8 +41,10 @@ function Todos() {
         setIsEditing(false);
       }
 
+     
+
   return (
-    <div>
+    <div className="max-w-4xl mx-auto">
        <form 
               onSubmit={(e) => {
                 e.preventDefault();
@@ -50,10 +54,11 @@ function Todos() {
                   ...rawData,
                   id
                 }
+                console.log(rawData);
                 setNewTodo((prevData)=>[...prevData,rawDataWithID])
                 e.target.reset();
               }}
-              className="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-100"
+              className="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-100 w-full"
             >
               <div className="flex flex-col space-y-4">
                 <label htmlFor="title" className="text-lg text-gray-700 font-medium">
@@ -68,6 +73,17 @@ function Todos() {
                     className="flex-1 bg-gray-50 text-gray-800 rounded-lg px-4 py-3 border border-gray-200 
                 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none transition-all duration-200"
                   />
+                    
+                <TimePick
+                label={'From'}
+                labelName={"timeFrom"}
+                />
+            
+                <TimePick
+                label={'To'}
+                labelName={"timeTo"}
+                />
+
                   <button 
                     type="submit"
                     className="bg-gray-600 text-white px-6 py-3 rounded-lg font-medium 
@@ -93,6 +109,8 @@ function Todos() {
                       <h2 className="text-xl font-semibold text-gray-800 mb-2">
                         {todo.title}
                       </h2>
+
+                      <span>Time Required:{calculateTimeReq(todo.timeFrom,todo.timeTo)}</span>
                     </div>
 
                     <div className="space-x-2">

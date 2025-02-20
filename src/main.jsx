@@ -19,8 +19,8 @@ ReactDOM.createRoot(root).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<ActualTodo />} />
-          <Route path="myday" element={<ActualTodo />} />
-          <Route path="inprogress" element={<InProgress />} />
+          <Route path="my-day" element={<ActualTodo />} />
+          <Route path="in-progress" element={<InProgress />} />
           <Route path="reflect" element={<Reflect />} />
           <Route path="weekly-goals" element={<WeeklyGoals />} />
           <Route path="quarterly-goals" element={<QuarterlyGoals />} />
