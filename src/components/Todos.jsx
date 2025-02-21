@@ -18,10 +18,25 @@ function Todos() {
       }
     
       const handleUpdateTodo = () => {
-        updateTodo(currentTodo);
+        const updatedTodo = {
+          ...currentTodo,
+          timeFrom: currentTodo.timeFrom,
+          timeTo: currentTodo.timeTo,
+          updatedAt: new Date().toISOString()
+        }
+        updateTodo(updatedTodo);
         setIsEditing(false);
         setCurrentTodo({});
     }
+
+    
+    // const handleTimeChange = (field) => (time) => {
+    //     setCurrentTodo(prev => ({
+    //         ...prev,
+    //         [field]: time
+    //     }));
+    // };
+      
 
     const handleCancelEdit = () => {
         setIsEditing(false);
@@ -31,11 +46,39 @@ function Todos() {
       const handleSubmit = (e) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget));
-        addTodo(formData);
+        const todo = {
+          title:formData.title,
+          timeFrom: formData.timeFrom,
+          timeTo:formData.timeTo,
+          completed: false,
+          createdAt: new Date().toISOString()
+        }
+        addTodo(todo);
         e.target.reset();
     }
 
-     
+    const handleToggleComplete = (todoId) => {
+      const todoToUpdate = todos.find(todo => todo.id === todoId);
+      if (todoToUpdate) {
+          updateTodo({
+              ...todoToUpdate,
+              completed: !todoToUpdate.completed
+          });
+      }
+  }
+
+  const sortedTodos = [...todos].sort((a, b) => {
+    // Sort by completion (incomplete first)
+    if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+    }
+    // Then sort by creation time
+    return new Date(b.createdAt) - new Date(a.createdAt);
+});
+
+  const completedCount = todos.filter(todo => todo.completed).length;
+  const totalCount = todos.length;
+
 
   return (
     <div>
@@ -58,12 +101,12 @@ function Todos() {
                     
                 <TimePick
                 label={'From'}
-                labelName={"timeFrom"}
+                objName={"timeFrom"}
                 />
             
                 <TimePick
                 label={'To'}
-                labelName={"timeTo"}
+                objName={"timeTo"}
                 />
 
                   <button 
@@ -79,20 +122,50 @@ function Todos() {
             </form>
 
             <div className="space-y-4">
+
+              
+              <div className="mb-6 flex justify-between items-center">
+                  <h2 className="text-lg font-medium text-gray-700">
+                      Your Tasks ({completedCount}/{totalCount} completed)
+                  </h2>
+                  <div className="text-sm text-gray-600">
+                      {((completedCount / totalCount) * 100).toFixed(0)}% complete
+                  </div>
+              </div>
         
-              {todos.map((todo) => (
+              {sortedTodos.map((todo) => (
                   <div 
                     key={todo.id}
-                    className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 
-              hover:shadow-md transition-all duration-200"
+                    className={`bg-white rounded-lg p-4 shadow-sm border border-gray-100 
+                      hover:shadow-md transition-all duration-200 
+                      ${todo.completed ? 'bg-gray-50' : ''}`}
                   >
                     <div className="flex justify-between items-center">
-                      <h2 className="text-xl font-semibold text-gray-800 mb-2">
+
+                    <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => handleToggleComplete(todo.id)}
+                    className="w-5 h-5 rounded border-gray-300 
+                        text-blue-600 focus:ring-blue-500"
+                    />
+
+                    <h2 className={`text-xl font-semibold text-gray-800 mb-2 
+                    ${todo.completed ? 'line-through text-gray-500' : ''}`}>
                         {todo.title}
                       </h2>
 
-                      <span>Time Required:{calculateTimeReq(todo.timeFrom,todo.timeTo)}</span>
-                    </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-gray-600">
+                            {todo.timeFrom} - {todo.timeTo}
+                        </span>
+                        <span className="text-gray-600">
+                            Duration: {calculateTimeReq(todo.timeFrom, todo.timeTo)}
+                        </span>
+                    </div>        
+
+                  </div>
+
 
                     <div className="space-x-2">
                     <button 

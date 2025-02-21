@@ -6,14 +6,14 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 
 import PropTypes from 'prop-types';
 
-export default function TimePick({label,labelName}) {
+export default function TimePick({label,objName}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['TimePicker']}>
         <TimePicker
           label={label}
           isRequired
-          name={labelName}
+          name={objName}
           className='bg-gray-100 rounded-md border border-slate-600 max-w-3 text-sm '
           viewRenderers={{
             hours: renderTimeViewClock,
@@ -28,10 +28,10 @@ export default function TimePick({label,labelName}) {
 
 TimePick.propTypes = {
     label: PropTypes.string.isRequired,
-    labelName: PropTypes.string.isRequired
+    objName: PropTypes.string.isRequired
   };
   
   TimePick.defaultProps = {
     label: 'Select Time',
-    labelName: 'time-picker'
+    objName: 'time-picker'
   };
