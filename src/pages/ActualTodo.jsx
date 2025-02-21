@@ -23,7 +23,7 @@ function ActualTodo() {
   return (
     <div className="flex-1 p-8">
 
-      <div className=" max-w-2xl mx-auto">
+      <div className=" max-w-4xl mx-auto">
           
             <div className="text-center font-bold mb-12">
 
@@ -36,7 +36,7 @@ function ActualTodo() {
                   <span>{todayDate} {properMonthName}</span>
               </div>  
 
-              </div>
+            </div>
 
             <Todos/>
 

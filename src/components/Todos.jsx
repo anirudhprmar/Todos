@@ -44,7 +44,7 @@ function Todos() {
      
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div>
        <form 
               onSubmit={(e) => {
                 e.preventDefault();
@@ -58,7 +58,7 @@ function Todos() {
                 setNewTodo((prevData)=>[...prevData,rawDataWithID])
                 e.target.reset();
               }}
-              className="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-100 w-full"
+              className="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-100 w-full "
             >
               <div className="flex flex-col space-y-4">
                 <label htmlFor="title" className="text-lg text-gray-700 font-medium">
@@ -70,7 +70,7 @@ function Todos() {
                     name="title"
                     required
                     placeholder="Enter your task..."
-                    className="flex-1 bg-gray-50 text-gray-800 rounded-lg px-4 py-3 border border-gray-200 
+                    className="flex-1 bg-gray-50 text-gray-800 rounded-lg px-4 py-1 border border-gray-200 
                 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:outline-none transition-all duration-200"
                   />
                     
