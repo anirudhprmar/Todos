@@ -1,63 +1,45 @@
-import { nanoid } from "@reduxjs/toolkit";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { TodoContext } from "../context/TodoContext.js";
 import TimePick from "./TimePick";
 import {calculateTimeReq} from './calculateTime.js'
+import { useState } from "react";
 
 function Todos() {
 
-     const [newTodo, setNewTodo] = useState(()=>{
-            return JSON.parse(localStorage.getItem('todos')) || []
-          }); // Ensure newTodo is always an array
-          
-        useEffect(()=>{
-          localStorage.setItem('todos',JSON.stringify(newTodo))
-        },[newTodo])
-        
-        
-        const handleDeleteTodo = (id)=>{
-          
-          const removedTodo = newTodo.filter((todo)=>{
-            //that particular element with id should not exist in the array
-            // return all array's except that one , with that id
-            return todo.id !== id ;
-            
-          })
-          setNewTodo(removedTodo)
-        }
+  const { todos, addTodo, deleteTodo,updateTodo } = useContext(TodoContext);
+
         
         const [isEditing,setIsEditing] = useState(false)
         const [currentTodo,setCurrentTodo] = useState({})
         
-        const handleEditTodo = (todo) =>{
-          setCurrentTodo(todo)
-          setIsEditing(true)
+        const handleEditClick = (todo) => {
+          setCurrentTodo(todo);
+          setIsEditing(true);
       }
     
-      const handleUpdateTodo = ()=>{
-        const updatedTodos = newTodo.map((item) => 
-          item.id === currentTodo.id ? currentTodo : item
-      )
-        setNewTodo(updatedTodos);
+      const handleUpdateTodo = () => {
+        updateTodo(currentTodo);
         setIsEditing(false);
-      }
+        setCurrentTodo({});
+    }
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setCurrentTodo({});
+    }
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = Object.fromEntries(new FormData(e.currentTarget));
+        addTodo(formData);
+        e.target.reset();
+    }
 
      
 
   return (
     <div>
-       <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                const rawData = Object.fromEntries(new FormData(e.currentTarget));
-                const id = nanoid()
-                const rawDataWithID = {
-                  ...rawData,
-                  id
-                }
-                console.log(rawData);
-                setNewTodo((prevData)=>[...prevData,rawDataWithID])
-                e.target.reset();
-              }}
+       <form onSubmit={handleSubmit}
               className="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-100 w-full "
             >
               <div className="flex flex-col space-y-4">
@@ -98,10 +80,9 @@ function Todos() {
 
             <div className="space-y-4">
         
-              {newTodo &&
-                newTodo.map((todo, index) => (
+              {todos.map((todo) => (
                   <div 
-                    key={index}
+                    key={todo.id}
                     className="bg-white rounded-lg p-4 shadow-sm border border-gray-100 
               hover:shadow-md transition-all duration-200"
                   >
@@ -117,7 +98,7 @@ function Todos() {
                     <button 
                     className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg 
                     transition-colors duration-200"
-                    onClick={()=>handleEditTodo(todo)}
+                    onClick={()=>handleEditClick(todo)}
                   >
                     Edit
                   </button>
@@ -132,6 +113,18 @@ function Todos() {
                     className="flex-1 bg-gray-50 text-gray-800 rounded-lg px-4 py-3 border border-gray-200"
                     /> 
 
+                    <TimePick
+                        label={'From'}
+                        value={currentTodo.timeFrom}
+                        onChange={(time) => setCurrentTodo({...currentTodo, timeFrom: time})}
+                    />
+
+                    <TimePick
+                        label={'To'}
+                        value={currentTodo.timeTo}
+                        onChange={(time) => setCurrentTodo({...currentTodo, timeTo: time})}
+                    />
+
                     <button
                     className="px-4 py-2 text-green-600 hover:bg-green-50 rounded-lg 
                     transition-colors duration-200"
@@ -141,11 +134,7 @@ function Todos() {
                     <button
                     className="px-4 py-2 text-orange-600 hover:bg-orange-50 rounded-lg 
                     transition-colors duration-200"
-                    onClick={()=> 
-                      <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                      {todo.title && setIsEditing(false)}
-                      </h2>
-                    }
+                    onClick={handleCancelEdit}
                     >Cancel</button>
                     </div>
                   ) : null }
@@ -154,15 +143,11 @@ function Todos() {
                   <button 
                     className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg 
                     transition-colors duration-200" 
-                    onClick={() => handleDeleteTodo(todo.id)}
+                    onClick={() =>  deleteTodo(todo.id)}
                   >
                     Delete
                   </button>
                     </div>
-
-                    {todo.description && (
-                      <p className="text-gray-600">{todo.description}</p>
-                    )}
 
                   </div>
 

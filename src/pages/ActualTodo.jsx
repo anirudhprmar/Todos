@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Todos from "../components/Todos";
 
 function ActualTodo() {
@@ -13,12 +12,6 @@ function ActualTodo() {
   const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const properMonthName = month[date.getMonth()];
   
-
-  useEffect(()=>{
-  properDayName,
-  todayDate,
-  properMonthName
-  })
   
   return (
     <div className="flex-1 p-8">
