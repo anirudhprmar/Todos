@@ -29,13 +29,14 @@ function Todos() {
         setCurrentTodo({});
     }
 
-    
-    // const handleTimeChange = (field) => (time) => {
-    //     setCurrentTodo(prev => ({
-    //         ...prev,
-    //         [field]: time
-    //     }));
-    // };
+
+    //curried function
+    const handleTimeChange = (field) => (time) => {
+        setCurrentTodo(prev => ({
+            ...prev,
+            [field]: time
+        }));
+    };
       
 
     const handleCancelEdit = () => {
@@ -82,7 +83,17 @@ function Todos() {
 
   return (
     <div>
-       <form onSubmit={handleSubmit}
+
+              <div className="mb-6 flex justify-between items-center">
+                  <h2 className="text-lg font-medium text-gray-700">
+                      Your Tasks ({completedCount}/{totalCount} completed)
+                  </h2>
+                  <div className="text-sm text-gray-600">
+                      {((completedCount / totalCount) * 100).toFixed(0)}% complete
+                  </div>
+              </div>
+              
+            <form onSubmit={handleSubmit}
               className="bg-white rounded-xl p-6 shadow-md mb-8 border border-gray-100 w-full "
             >
               <div className="flex flex-col space-y-4">
@@ -122,16 +133,6 @@ function Todos() {
             </form>
 
             <div className="space-y-4">
-
-              
-              <div className="mb-6 flex justify-between items-center">
-                  <h2 className="text-lg font-medium text-gray-700">
-                      Your Tasks ({completedCount}/{totalCount} completed)
-                  </h2>
-                  <div className="text-sm text-gray-600">
-                      {((completedCount / totalCount) * 100).toFixed(0)}% complete
-                  </div>
-              </div>
         
               {sortedTodos.map((todo) => (
                   <div 
@@ -150,7 +151,7 @@ function Todos() {
                         text-blue-600 focus:ring-blue-500"
                     />
 
-                    <h2 className={`text-xl font-semibold text-gray-800 mb-2 
+                    <h2 className={`text-xl font-semibold text-gray-800 mb-2 mr-75
                     ${todo.completed ? 'line-through text-gray-500' : ''}`}>
                         {todo.title}
                       </h2>
@@ -170,14 +171,22 @@ function Todos() {
                     <div className="space-x-2">
                     <button 
                     className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg 
-                    transition-colors duration-200"
+                    transition-colors duration-200 mt-2"
                     onClick={()=>handleEditClick(todo)}
                   >
                     Edit
                   </button>
 
+                  <button 
+                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg 
+                    transition-colors duration-200 mt-2" 
+                    onClick={() =>  deleteTodo(todo.id)}
+                  >
+                    Delete
+                  </button>
+
                   {isEditing && currentTodo.id === todo.id ? (
-                    <div>
+                    <div className="flex gap-3 bg-gray-700 p-2 justify-center items-center rounded-2xl mt-3">
 
                     <input
                     type="text"
@@ -189,13 +198,13 @@ function Todos() {
                     <TimePick
                         label={'From'}
                         value={currentTodo.timeFrom}
-                        onChange={(time) => setCurrentTodo({...currentTodo, timeFrom: time})}
+                       onChange={handleTimeChange('timeFrom')}
                     />
 
                     <TimePick
                         label={'To'}
                         value={currentTodo.timeTo}
-                        onChange={(time) => setCurrentTodo({...currentTodo, timeTo: time})}
+                        onChange={handleTimeChange('timeTo')}
                     />
 
                     <button
@@ -213,13 +222,7 @@ function Todos() {
                   ) : null }
 
                  
-                  <button 
-                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg 
-                    transition-colors duration-200" 
-                    onClick={() =>  deleteTodo(todo.id)}
-                  >
-                    Delete
-                  </button>
+                 
                     </div>
 
                   </div>
