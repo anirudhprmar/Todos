@@ -1,33 +1,58 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import {calculateTimeReq} from '../components/calculateTime.js'
-import { useContext } from "react";
+import { useContext, useState, useEffect  } from "react";
 import { TodoContext } from "../context/TodoContext.js";
 
 function InProgress() {
   const { todos, updateTodo } = useContext(TodoContext);
   const location = useLocation();
-  const todo = location.state.todo;
-
-  if (!location.state || !location.state.todo) {
-    const msg = "Nothing in Progress"
-    return msg
-  }
-
-  const handleToggleComplete = () => {
-    const todoToUpdate = todos.find(todo => todo.id === location.state.todo.id);
-    if (todoToUpdate) {
-        updateTodo({
-            ...todoToUpdate,
-            completed: !todoToUpdate.completed
-        });
+  const [todo,setTodo] = useState(location.state?.todo)
+  const navigate =useNavigate();
+  
+  
+  
+  useEffect(() => {
+    if (location.state?.todo?.id) {
+      
+        const currentTodo = todos.find(t => t.id === location.state.todo.id);
+        if (currentTodo) {
+          setTodo(currentTodo);
+        }
     }
+  }, [todos, location.state?.todo?.id]);
+  
+  
+  if (!location.state || !location.state.todo) {
+    return (
+      <div className="text-center text-3xl text-gray-800 p-3">
+        No Task is being worked at this time !!
+      </div>
+    );
   }
+  
+  const handleToggleComplete = () => {
+   
+    const updatedTodo ={
+        ...todo,
+        completed: !todo.completed
+    };
+
+    updateTodo(updatedTodo);
+    setTodo(updatedTodo)
+
+    if (updatedTodo.completed) {
+      navigate('/my-day');
+    }
+
+  }
+
+  
 
 
   return (
     <div>
       <header>
-        <h2 className="text-center text-3xl text-gray-800 p-3 underline">Lets get it done</h2>
+      <h2 className="text-center text-3xl text-gray-800 p-3 underline">Focus on: {todo.title}</h2>  
       </header>
 
       <main className="">
@@ -41,7 +66,7 @@ function InProgress() {
             <input
               type="checkbox"
               checked={todo.completed}
-              onChange={() => handleToggleComplete(todo.id)}
+              onChange={handleToggleComplete}
               className="w-5 h-5 rounded border-gray-300 
               text-blue-600 focus:ring-blue-500"
             />
