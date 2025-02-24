@@ -13,7 +13,7 @@ if (period === "AM") {
     hour = (hour === 12 ? 12 : hour + 12); // 12 PM stays 12, other PM times add 12
 }
 
-return hour*60+min;
+return hour * 60 + min;
 }
 
 

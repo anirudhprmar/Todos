@@ -2,14 +2,29 @@ import { useLocation, useNavigate } from "react-router-dom"
 import {calculateTimeReq} from '../components/calculateTime.js'
 import { useContext, useState, useEffect  } from "react";
 import { TodoContext } from "../context/TodoContext.js";
+import Timer from '../components/Timer';
 
 function InProgress() {
   const { todos, updateTodo } = useContext(TodoContext);
   const location = useLocation();
   const [todo,setTodo] = useState(location.state?.todo)
   const navigate =useNavigate();
+  const [duration,setDuration] = useState(0);
+  const [working,setWorking] = useState(false);
   
   
+  useEffect(()=>{
+    if (todo) {
+      const value = calculateTimeReq(todo.timeFrom, todo.timeTo);
+      const hours = value.split(' ')[0];
+      const minutes = value.split(' ')[3];
+      
+      setDuration({
+        hr: hours,
+        min: minutes
+      });
+    }
+  },[todo])
   
   useEffect(() => {
     if (location.state?.todo?.id) {
@@ -20,7 +35,7 @@ function InProgress() {
         }
     }
   }, [todos, location.state?.todo?.id]);
-  
+
   
   if (!location.state || !location.state.todo) {
     return (
@@ -89,10 +104,11 @@ function InProgress() {
           <div className="space-x-2">
             <div className="flex justify-between items-center">
               <button 
-                className="px-4 py-2 text-[#493D9E] animate-bounce hover:bg-[#DAD2FF] rounded-lg 
+                className="px-4 py-2 text-[#493D9E] hover:bg-[#DAD2FF] rounded-lg 
                 transition-colors duration-200 mt-2 " 
+                onClick={()=> setWorking(true)}
               >
-                Working on it⚒️
+                Start Working on it⚒️
               </button>
             </div>
           </div>
@@ -100,7 +116,8 @@ function InProgress() {
       </main>
 
       <main>
-        {/* stopwatch */}
+        <span>Lets get it</span>
+        {working && <Timer duration={duration} />}
       </main>
     </div>
   )
